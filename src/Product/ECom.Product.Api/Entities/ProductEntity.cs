@@ -15,6 +15,8 @@ namespace ECom.Product.Api.Entities
         public string Name { get; set; }
 
         public string Description { get; set; }
+        
+        public string CategoryName { get; set; }
 
         public string ImageFile { get; set; }
 
@@ -23,8 +25,6 @@ namespace ECom.Product.Api.Entities
         public int BrandId { get; set; }
 
         public Brand Brand { get; set; }
-
-        public List<Category> Categories { get; set; } = new List<Category>();
 
         public List<ProductType> Types { get; set; } = new List<ProductType>();
 

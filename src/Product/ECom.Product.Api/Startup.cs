@@ -1,19 +1,14 @@
 using ECom.Product.Api.Data.Abstract;
+using ECom.Product.Api.Repositories.Abstract;
+using ECom.Product.Api.Repositories.Concrete;
 using ECom.Product.Api.Settings.Abstract;
 using ECom.Product.Api.Settings.Concrete;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ECom.Product.Api
 {
@@ -40,7 +35,8 @@ namespace ECom.Product.Api
             // When "IProductDatabaseSettings" injecting get instance of func: it is required getting databasesettings value from above configuration
             services.AddSingleton<IProductDatabaseSettings>(sp => sp.GetRequiredService<IOptions<ProductDatabaseSettings>>().Value);
 
-            services.AddTransient<IProductContext, ProductContext>(); // todo: check
+            services.AddTransient<IProductContext, ProductContext>(); // todo: check, why transient
+            services.AddTransient<IProductRepository, ProductRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
