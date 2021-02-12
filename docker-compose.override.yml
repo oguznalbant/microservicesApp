@@ -1,0 +1,36 @@
+version: '3.4'
+
+services:
+    productDb:
+        container_name: productDb
+        restart: always
+        volumes:
+            - ${WEBAPP_STORAGE_HOME}/site:/data/db
+        ports:
+            - "27017:27017" 
+    
+    productDbExpress:
+        container_name: productDbExpress
+        ports:
+            - 8081:8081
+        environment:
+            ME_CONFIG_MONGODB_SERVER: productDb
+            ME_CONFIG_MONGODB_ADMINUSERNAME: oguzhan
+            ME_CONFIG_MONGODB_ADMINPASSWORD: oguzhan
+            ME_CONFIG_BASICAUTH_USERNAME: oguzhan
+            ME_CONFIG_BASICAUTH_PASSWORD: oguzhan
+        depends_on:
+            - productDb
+
+    ecom.product.api:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_URLS=http://+:443;http://+:80
+            - "ProductDatabaseSettings:ConnectionString=mongodb://productDb:27017"
+        depends_on:
+            - productDb
+        ports:
+            - "8000:80"
+            - "443"
+        volumes:
+            - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro

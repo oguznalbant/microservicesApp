@@ -1,0 +1,14 @@
+version: '3.4'
+
+services:
+    productDb:
+        image: mongo
+
+    productDbExpress:
+        image: mongo-express
+
+    ecom.product.api:
+        image: ${DOCKER_REGISTRY-}ecomproductapi
+        build:
+            context: .
+            dockerfile: src/Product/ECom.Product.Api/Dockerfile

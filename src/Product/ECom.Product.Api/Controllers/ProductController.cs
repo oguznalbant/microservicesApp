@@ -21,7 +21,6 @@ namespace ECom.Product.Api.Controllers
             _logger = logger;
         }
 
-
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<ProductEntity>), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<IEnumerable<ProductEntity>>> GetProducts()
@@ -30,8 +29,8 @@ namespace ECom.Product.Api.Controllers
 
             return Ok(products);
         }
-
-        [HttpGet("{id: length(24)}",Name = "GetProduct")]
+        
+        [HttpGet("{id:length(24)}",Name = "GetProduct")]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(ProductEntity), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<ProductEntity>> GetProductById(string id) // todo: convention check 
@@ -47,12 +46,12 @@ namespace ECom.Product.Api.Controllers
             return Ok(product);
         }
 
-        [Route("[action]/[category]")] // after main controller route adding this routing
+        [Route("[action]/{category}")] // after main controller route adding this routing
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<ProductEntity>), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<IEnumerable<ProductEntity>>> GetProductByCategory(string categoryName)
+        public async Task<ActionResult<IEnumerable<ProductEntity>>> GetProductByCategory(string category)
         {
-            var products = await _productRepository.GetAll(x => x.CategoryName == categoryName);
+            var products = await _productRepository.GetAll(x => x.CategoryName == category);
 
             return Ok(products);
         }
@@ -75,13 +74,13 @@ namespace ECom.Product.Api.Controllers
             return Ok();
         }
 
-        [HttpDelete("id:length(24)")]
+        [HttpDelete("{id:length(24)}")]
         [ProducesResponseType(typeof(ProductEntity), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> DeleteProductById(string id)
         {
-            await _productRepository.Delete(id);
+            var result = await _productRepository.Delete(id);
 
-            return Ok();
+            return Ok(result);
         }
     }
 }
