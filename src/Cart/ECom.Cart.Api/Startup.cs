@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using StackExchange.Redis;
 
 namespace ECom.Cart.Api
@@ -26,14 +27,17 @@ namespace ECom.Cart.Api
             //Redis connection from appsetting.json
             services.AddSingleton<ConnectionMultiplexer>(sp =>
             {
-                var configuration = ConfigurationOptions.Parse("Redis", true);
-                var connection = ConnectionMultiplexer.Connect(configuration);
-
-                return connection;
+                var configuration = ConfigurationOptions.Parse(Configuration.GetConnectionString("Redis"), true);
+                return ConnectionMultiplexer.Connect(configuration);
             });
 
             services.AddTransient<IShoppingCartContext, ShoppingCartContext>();
             services.AddTransient<IShoppingCartRepository, ShoppingCartRepository>();
+
+            services.AddSwaggerGen(x =>
+            {
+                x.SwaggerDoc("v1", new OpenApiInfo { Title = "Cart Api", Version = "v1" });
+            });
 
             services.AddControllers();
         }
@@ -54,6 +58,9 @@ namespace ECom.Cart.Api
             {
                 endpoints.MapControllers();
             });
+
+            app.UseSwagger();
+            app.UseSwaggerUI(x => x.SwaggerEndpoint("/swagger/v1/swagger.json", "Shopping Cart Api V1"));
         }
     }
 }

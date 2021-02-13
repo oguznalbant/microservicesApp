@@ -12,3 +12,12 @@ services:
         build:
             context: .
             dockerfile: src/Product/ECom.Product.Api/Dockerfile
+    cartDb:
+        image: redis
+
+    ecom.cart.api:
+      image: ${DOCKER_REGISTRY-}ecomcartapi
+      build:
+        context: .
+        dockerfile: src/Cart/ECom.Cart.Api/Dockerfile
+
