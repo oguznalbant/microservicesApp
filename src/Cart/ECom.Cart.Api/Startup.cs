@@ -1,15 +1,13 @@
+using ECom.Cart.Api.Data.Abstract;
+using ECom.Cart.Api.Data.Concrete;
+using ECom.Cart.Api.Repository.Abstract;
+using ECom.Cart.Api.Repository.Concrete;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ECom.Cart.Api
 {
@@ -25,7 +23,7 @@ namespace ECom.Cart.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //Redis connection
+            //Redis connection from appsetting.json
             services.AddSingleton<ConnectionMultiplexer>(sp =>
             {
                 var configuration = ConfigurationOptions.Parse("Redis", true);
@@ -33,6 +31,9 @@ namespace ECom.Cart.Api
 
                 return connection;
             });
+
+            services.AddTransient<IShoppingCartContext, ShoppingCartContext>();
+            services.AddTransient<IShoppingCartRepository, ShoppingCartRepository>();
 
             services.AddControllers();
         }
