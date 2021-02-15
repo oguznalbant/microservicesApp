@@ -1,8 +1,6 @@
 ﻿using RabbitMQ.Client;
 using RabbitMQ.Client.Exceptions;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 
 namespace ECom.EventBusRabbitMq
@@ -29,7 +27,6 @@ namespace ECom.EventBusRabbitMq
             {
                 return _connection != null && _connection.IsOpen && !_disposed;
             }
-            set { };
         }
 
         public IModel CreateModel()
