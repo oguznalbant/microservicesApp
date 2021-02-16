@@ -1,6 +1,11 @@
-﻿using ECom.Cart.Api.Entities;
+﻿using AutoMapper;
+using ECom.Cart.Api.Entities;
 using ECom.Cart.Api.Repository.Abstract;
+using ECom.EventBusRabbitMq.Common;
+using ECom.EventBusRabbitMq.Events;
+using ECom.EventBusRabbitMq.Producer.Abstract;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -11,10 +16,18 @@ namespace ECom.Cart.Api.Controllers
     public class CartController : ControllerBase
     {
         private readonly IShoppingCartRepository _shoppingCartRepository;
+        private readonly IMapper _mapper;
+        //private readonly ILogger _logger; // will be implement
+        private readonly IEventBusProducer<ShoppingCartCheckoutEvent> _eventBusProducer;
 
-        public CartController(IShoppingCartRepository shoppingCartRepository)
+        public CartController(
+            IShoppingCartRepository shoppingCartRepository, 
+            IMapper mapper, 
+            IEventBusProducer<ShoppingCartCheckoutEvent> eventBusProducer)
         {
             _shoppingCartRepository = shoppingCartRepository;
+            _mapper = mapper;
+            _eventBusProducer = eventBusProducer;
         }
 
         [HttpGet]
@@ -42,6 +55,40 @@ namespace ECom.Cart.Api.Controllers
             var deleted = await _shoppingCartRepository.DeleteShoppingCart(username);
 
             return Ok(deleted);
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.Accepted)]
+        public async Task<IActionResult> ShoppingCartCheckout([FromBody] ShoppingCart shoppingCart)
+        {
+            //get cart from redis
+            var cart = await _shoppingCartRepository.GetShoppingCart(shoppingCart.Username);
+            if (cart == null)
+            {
+                return BadRequest();
+            }
+
+            // delete cart from db(redis)
+            var removedCart = await _shoppingCartRepository.DeleteShoppingCart(cart.Username);
+            if (!removedCart)
+            {
+                return BadRequest();
+            }
+
+            var publishEvent = _mapper.Map<ShoppingCartCheckoutEvent>(shoppingCart);
+
+            try
+            {
+                _eventBusProducer.Publish(EventBusConstants.BasketCheckoutQueue, publishEvent);
+            }
+            catch (System.Exception ex)
+            {
+                //_logger.LogError($"Event bus publishing {EventBusConstants.BasketCheckoutQueue} is not successful. Error: {ex}");
+            }
+
+            return Accepted();
         }
     }
 }

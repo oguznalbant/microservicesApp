@@ -1,8 +1,9 @@
-﻿using System;
+﻿using ECom.EventBusRabbitMq.Abstraction;
+using System;
 
 namespace ECom.EventBusRabbitMq.Events
 {
-    public class ShoppingCartCheckoutEvent
+    public class ShoppingCartCheckoutEvent : IPublishEvent
     {
         public Guid Id { get; set; }
         public string UserName { get; set; }

@@ -1,4 +1,5 @@
-﻿using RabbitMQ.Client;
+﻿using ECom.EventBusRabbitMq.Abstraction;
+using RabbitMQ.Client;
 using RabbitMQ.Client.Exceptions;
 using System;
 using System.Threading;

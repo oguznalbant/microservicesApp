@@ -1,7 +1,7 @@
 ﻿using RabbitMQ.Client;
 using System;
 
-namespace ECom.EventBusRabbitMq
+namespace ECom.EventBusRabbitMq.Abstraction
 {
     public interface IRabbitMQConnection : IDisposable
     {
