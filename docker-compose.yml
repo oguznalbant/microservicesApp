@@ -7,13 +7,17 @@ services:
     productDbExpress:
         image: mongo-express
 
+    cartDb:
+        image: redis
+
+    rabbitMQ:
+        image: rabbitmq:3-management
+
     ecom.product.api:
         image: ${DOCKER_REGISTRY-}ecomproductapi
         build:
             context: .
             dockerfile: src/Product/ECom.Product.Api/Dockerfile
-    cartDb:
-        image: redis
 
     ecom.cart.api:
       image: ${DOCKER_REGISTRY-}ecomcartapi

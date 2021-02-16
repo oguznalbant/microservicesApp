@@ -21,6 +21,19 @@ services:
             ME_CONFIG_BASICAUTH_PASSWORD: oguzhan
         depends_on:
             - productDb
+    
+    cartDb:
+        container_name: cartDb
+        restart: always
+        ports:
+            - "6379:6379" 
+    
+    rabbitMQ:
+        container_name: rabbitMQ
+        restart: always
+        ports:
+            - "5672:5672" 
+            - "15672:15672" 
 
     ecom.product.api:
         environment:
@@ -35,18 +48,14 @@ services:
         volumes:
             - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
     
-    cartDb:
-        container_name: cartDb
-        restart: always
-        ports:
-            - "6379:6379" 
-    
     ecom.cart.api:
         environment:
             - ASPNETCORE_ENVIRONMENT=Development
             - "ConnectionStrings:Redis=cartDb:6379"
+            - "EventBus:Hostname=rabbitMQ"
         depends_on:
             - cartDb
+            - rabbitMQ
         ports:
             - "8001:80"
         volumes:
