@@ -21,7 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECom.EventBusRabbitMq", "sr
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Order", "Order", "{49D48D94-7127-4713-A010-5E182646325C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECom.Order.Api", "src\Order\ECom.Order.Api\ECom.Order.Api.csproj", "{6BE1A519-FCE6-4912-A4EA-4D324D940A42}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECom.Order.Api", "src\Order\ECom.Order.Api\ECom.Order.Api.csproj", "{6BE1A519-FCE6-4912-A4EA-4D324D940A42}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECom.Order.Core", "src\Order\ECom.Order.Core\ECom.Order.Core.csproj", "{EDEF8EFA-3A93-48DC-A149-5DED5297341A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +51,10 @@ Global
 		{6BE1A519-FCE6-4912-A4EA-4D324D940A42}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6BE1A519-FCE6-4912-A4EA-4D324D940A42}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6BE1A519-FCE6-4912-A4EA-4D324D940A42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDEF8EFA-3A93-48DC-A149-5DED5297341A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDEF8EFA-3A93-48DC-A149-5DED5297341A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDEF8EFA-3A93-48DC-A149-5DED5297341A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDEF8EFA-3A93-48DC-A149-5DED5297341A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,6 +68,7 @@ Global
 		{F7336AD2-2AA3-48F1-BEED-2696925B26D2} = {9CAB68D2-1F7F-40A9-BE7F-AE9D6220ED1B}
 		{49D48D94-7127-4713-A010-5E182646325C} = {A2619A13-AAB5-47A3-A82D-5717E3A0F6A1}
 		{6BE1A519-FCE6-4912-A4EA-4D324D940A42} = {49D48D94-7127-4713-A010-5E182646325C}
+		{EDEF8EFA-3A93-48DC-A149-5DED5297341A} = {49D48D94-7127-4713-A010-5E182646325C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2ECA66B3-45E8-489A-9C0E-2471D7E232A1}
